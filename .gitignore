@@ -43,7 +43,6 @@ build/Release
 
 # Dependency directories
 node_modules/
-database/db.json
 SessionAutoZapp/
 auth_info/
 jspm_packages/

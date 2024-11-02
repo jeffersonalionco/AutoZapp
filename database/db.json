@@ -1,0 +1,16 @@
+{
+  "usuarios": {
+    "554598331383@c.us": {
+      "id": "554598331383@c.us"
+    },
+    "120363269410148192@g.us": {
+      "id": "120363269410148192@g.us"
+    }
+  },
+  "grupos": {},
+  "infobot": {
+    "nomeBot": "AutoZapp Inc.",
+    "prefix": "/",
+    "numeroBot": null
+  }
+}
