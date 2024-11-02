@@ -10,7 +10,36 @@ const AutoZapp = new Client({
     })
 });
 
-global.db = { nome: "AutoZapp"}
+
+// Caminho do arquivo que você deseja verificar
+const filePath = path.join(__dirname, 'database/db.json');
+
+
+
+
+// Verifica se o arquivo existe
+if (!fs.existsSync(filePath)) {
+    let data = {
+        usuarios: {},
+        grupos: {},
+        infobot: {
+            nomeBot: 'AutoZapp Inc.',
+            prefix: '/',
+            numeroBot: null
+        }
+    };
+    
+    // Se não existir, cria um novo arquivo
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8'); // Converte o objeto em JSON
+    console.log('Arquivo criado:', filePath);
+} else {
+    console.log('O arquivo já existe:', filePath);
+}
+
+
+
+
+
 
 
 // Exibe o QR code
@@ -43,10 +72,23 @@ const loadPlugins = () => {
 let plugins = loadPlugins();
 
 // Escuta mensagens e passa a mensagem para os plugins
-AutoZapp.on('message', (msg) => {
+AutoZapp.on('message', async (msg) => {
+    
+    
+
     for (const pluginName in plugins) {
         plugins[pluginName](AutoZapp, msg); // Passa o cliente e a mensagem para cada plugin
+
+        
     }
+
+    if(!global.db.usuarios[msg.from]) {
+        global.db.usuarios[msg.from] = {
+                id: msg.from
+        }
+
+    }
+    fs.writeFileSync(filePath, JSON.stringify(global.db, null, 2), 'utf8');
 });
 
 // Monitorar mudanças na pasta de plugins
@@ -59,5 +101,9 @@ fs.watch('./plugins', (eventType, filename) => {
     }
 });
 
+let database = JSON.parse(fs.readFileSync('./database/db.json'))
+global.db  = database
+
+console.log(global.db)
 // Inicializa o cliente
 AutoZapp.initialize();
